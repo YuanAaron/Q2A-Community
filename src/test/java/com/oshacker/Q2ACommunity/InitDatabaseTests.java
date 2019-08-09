@@ -35,7 +35,7 @@ public class InitDatabaseTests {
 			User user = new User();
 			//牛客头像API：http://images.nowcoder.com/head/%dt.png
             //Github头像API：https://avatars.githubusercontent.com/u/%d
-			user.setHeadUrl(String.format("https://avatars.githubusercontent.com/u/%d", random.nextInt(1000)));
+			user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", random.nextInt(1000)));
 			user.setName(String.format("USER%d", i));
 			user.setPassword("yy");
 			user.setSalt("");
@@ -55,9 +55,9 @@ public class InitDatabaseTests {
 			questionDAO.addQuestion(question);
 		}
 
-		Assert.assertEquals("xx",userDAO.selectById(1).getPassword());
-		userDAO.deleteById(1);
-		Assert.assertNull(userDAO.selectById(1));
+//		Assert.assertEquals("xx",userDAO.selectById(1).getPassword());
+//		userDAO.deleteById(1);
+//		Assert.assertNull(userDAO.selectById(1));
 
         //System.out.println(questionDAO.selectLatestQuestions(0,0,10));
 	}
