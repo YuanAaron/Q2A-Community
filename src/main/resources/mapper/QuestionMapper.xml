@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.oshacker.Q2ACommunity.dao.QuestionDAO">
+    <sql id="table">question</sql>
+    <sql id="insertFields">(title, content, user_id,created_date,comment_count)</sql>
+    <sql id="selectFields">id, title, content, user_id,created_date,comment_count</sql>
+
+    <!--返回自增主键（方法三）-->
+    <insert id="addQuestion" parameterType="Question" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id">
+            INSERT INTO
+            <include refid="table"/>
+            <include refid="insertFields"/>
+            VALUES (#{title},#{content},#{userId},#{createdDate},#{commentCount})
+    </insert>
+
+    <select id="selectLatestQuestions" resultType="Question">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        <include refid="table"/>
+
+        <if test="userId != 0">
+            WHERE user_id = #{userId}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{offset},#{limit}
+    </select>
+</mapper>
