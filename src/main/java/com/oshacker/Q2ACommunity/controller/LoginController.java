@@ -23,6 +23,30 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(path={"/login"},method={RequestMethod.POST})
+    public String login(Model model,
+                        @RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        @RequestParam(value = "rememberme",defaultValue = "false") Boolean rememberme,
+                        HttpServletResponse response) {
+        try {
+            Map<String,String>  map=userService.login(username,password);
+            //向浏览器下发ticket
+            if (map.containsKey("ticket")) {
+                Cookie cookie=new Cookie("ticket",map.get("ticket"));
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                return "redirect:/";
+            }else{
+                model.addAttribute("msg",map.get("msg"));
+                return "login";
+            }
+        } catch (Exception e) {
+            LOGGER.error("登录失败："+e.getMessage());
+            return "login";
+        }
+    }
+
     @RequestMapping(path = {"/reglogin"}, method = {RequestMethod.GET})
     public String regloginPage() {
         return "login";
@@ -31,15 +55,21 @@ public class LoginController {
     @RequestMapping(path={"/reg"},method={RequestMethod.POST})
     public String register(Model model,
                            @RequestParam("username") String username,
-                           @RequestParam("password") String password) {
+                           @RequestParam("password") String password,
+                           HttpServletResponse response) {
 
         try {
             Map<String,String>  map=userService.register(username,password);
-            if (map.containsKey("msg")) {
+            //向浏览器下发ticket
+            if (map.containsKey("ticket")) {
+                Cookie cookie=new Cookie("ticket",map.get("ticket"));
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                return "redirect:/";
+            }else{
                 model.addAttribute("msg",map.get("msg"));
                 return "login";
             }
-            return "redirect:/";
         } catch (Exception e) {
             LOGGER.error("注册失败："+e.getMessage());
             return "login";
