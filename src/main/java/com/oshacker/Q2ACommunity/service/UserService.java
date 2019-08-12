@@ -20,6 +20,10 @@ public class UserService {
     @Autowired
     private LoginTicketDAO loginTicketDAO;
 
+    public void logout(String ticket) {
+        loginTicketDAO.updateStatus(ticket,1);
+    }
+
     public Map<String,String> login(String username,String password) {
         Map<String,String> map=new HashMap<>();
         if (StringUtils.isBlank(username)) { //str==null||str.length()==0||str.trim().length()==0
