@@ -1,6 +1,7 @@
 package com.oshacker.Q2ACommunity.controller;
 
 import com.oshacker.Q2ACommunity.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,21 @@ public class LoginController {
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
                         @RequestParam(value = "rememberme",defaultValue = "false") Boolean rememberme,
-                        HttpServletResponse response) {
+                        HttpServletResponse response,
+                        @RequestParam(value = "next",required = false) String next) {
         try {
             Map<String,String>  map=userService.login(username,password);
             //向浏览器下发ticket
             if (map.containsKey("ticket")) {
                 Cookie cookie=new Cookie("ticket",map.get("ticket"));
                 cookie.setPath("/");
+                if (rememberme) {
+                    cookie.setMaxAge(5*24*3600);
+                }
                 response.addCookie(cookie);
+                if (!StringUtils.isBlank(next)) {
+                    return "redirect:"+next;
+                }
                 return "redirect:/";
             }else{
                 model.addAttribute("msg",map.get("msg"));
@@ -55,7 +63,8 @@ public class LoginController {
     }
 
     @RequestMapping(path = {"/reglogin"}, method = {RequestMethod.GET})
-    public String regloginPage() {
+    public String regloginPage(Model model,@RequestParam(value = "next",required = false) String next) {
+        model.addAttribute("next",next);
         return "login";
     }
 
@@ -64,7 +73,8 @@ public class LoginController {
                            @RequestParam("username") String username,
                            @RequestParam("password") String password,
                            @RequestParam(value="rememberme", defaultValue = "false") boolean rememberme,
-                           HttpServletResponse response) {
+                           HttpServletResponse response,
+                           @RequestParam(value = "next",required = false) String next) {
 
         try {
             Map<String,String>  map=userService.register(username,password);
@@ -72,7 +82,13 @@ public class LoginController {
             if (map.containsKey("ticket")) {
                 Cookie cookie=new Cookie("ticket",map.get("ticket"));
                 cookie.setPath("/");
+                if (rememberme) {
+                    cookie.setMaxAge(5*24*3600);
+                }
                 response.addCookie(cookie);
+                if (!StringUtils.isBlank(next)) {
+                    return "redirect:"+next;
+                }
                 return "redirect:/";
             }else{
                 model.addAttribute("msg",map.get("msg"));
