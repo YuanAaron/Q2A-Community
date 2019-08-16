@@ -1,0 +1,64 @@
+package com.oshacker.Q2ACommunity.controller;
+
+import com.oshacker.Q2ACommunity.model.HostHolder;
+import com.oshacker.Q2ACommunity.model.Question;
+import com.oshacker.Q2ACommunity.service.QuestionService;
+import com.oshacker.Q2ACommunity.service.UserService;
+import com.oshacker.Q2ACommunity.utils.JSONUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+
+@Controller
+public class QuestionController {
+    private static final Logger logger= LoggerFactory.getLogger("QuestionController.calss");
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private HostHolder hostHolder;
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("/question/{qid}")
+    public String questionDetail(Model model,@PathVariable("qid") int qid) {
+        Question question = questionService.selectById(qid);
+        model.addAttribute("question",question);
+        return "detail";
+    }
+
+    @RequestMapping(value = "/question/add",method ={RequestMethod.POST})
+    @ResponseBody
+    public String addQuestion(@RequestParam("title") String title,
+                              @RequestParam("content") String content) {
+        try {
+            Question question=new Question();
+            question.setTitle(title);
+            question.setContent(content);
+            question.setCreatedDate(new Date());
+            question.setCommentCount(0);
+            if (hostHolder.getUser()==null) {//未登录
+                //question.setUserId(ConstantUtil.ANONYMOUS_USERID);
+
+                //从popupAdd.js中可知，999表示未登录，跳转到登录页面
+                return JSONUtil.getJSONString(999);
+            }else {
+                question.setUserId(hostHolder.getUser().getId());
+            }
+            if (questionService.addQuestion(question)>0) {
+                return JSONUtil.getJSONString(0);
+            }
+        } catch (Exception e) {
+            logger.error("增加题目失败"+e.getMessage());
+        }
+
+        return JSONUtil.getJSONString(1,"失败");
+    }
+}

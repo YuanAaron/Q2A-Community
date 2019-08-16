@@ -28,4 +28,12 @@
         ORDER BY id DESC
         LIMIT #{offset},#{limit}
     </select>
+
+    <select id="selectById" resultType="Question">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        <include refid="table"/>
+        where id=#{id}
+    </select>
 </mapper>
