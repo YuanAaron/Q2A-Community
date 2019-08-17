@@ -2,6 +2,7 @@ package com.oshacker.Q2ACommunity.utils;
 
 import com.alibaba.fastjson.JSONObject;
 
+//弹窗一般返回的json串
 public class JSONUtil {
 
     public static String getJSONString(int code) {

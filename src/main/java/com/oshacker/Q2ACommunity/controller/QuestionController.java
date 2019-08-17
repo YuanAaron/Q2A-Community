@@ -1,9 +1,13 @@
 package com.oshacker.Q2ACommunity.controller;
 
+import com.oshacker.Q2ACommunity.model.Comment;
 import com.oshacker.Q2ACommunity.model.HostHolder;
 import com.oshacker.Q2ACommunity.model.Question;
+import com.oshacker.Q2ACommunity.model.ViewObject;
+import com.oshacker.Q2ACommunity.service.CommentService;
 import com.oshacker.Q2ACommunity.service.QuestionService;
 import com.oshacker.Q2ACommunity.service.UserService;
+import com.oshacker.Q2ACommunity.utils.ConstantUtil;
 import com.oshacker.Q2ACommunity.utils.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -27,10 +33,24 @@ public class QuestionController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CommentService commentService;
+
     @RequestMapping("/question/{qid}")
     public String questionDetail(Model model,@PathVariable("qid") int qid) {
         Question question = questionService.selectById(qid);
         model.addAttribute("question",question);
+
+        List<Comment> commentList= commentService.getCommentByEntity(qid, ConstantUtil.ENTITY_QUESTION);
+        List<ViewObject> comments=new ArrayList<>();
+        for (Comment comment:commentList) {
+            ViewObject vo=new ViewObject();
+            vo.set("comment",comment);
+            vo.set("user",userService.getUserById(comment.getUserId()));
+            comments.add(vo);
+        }
+
+        model.addAttribute("comments",comments);
         return "detail";
     }
 

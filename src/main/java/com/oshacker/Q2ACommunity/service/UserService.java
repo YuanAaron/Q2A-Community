@@ -20,6 +20,10 @@ public class UserService {
     @Autowired
     private LoginTicketDAO loginTicketDAO;
 
+    public User selectByName(String name) {
+        return userDAO.selectByName(name);
+    }
+
     public void logout(String ticket) {
         loginTicketDAO.updateStatus(ticket,1);
     }

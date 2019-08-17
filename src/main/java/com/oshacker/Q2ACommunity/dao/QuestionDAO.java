@@ -4,6 +4,7 @@ import com.oshacker.Q2ACommunity.model.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface QuestionDAO {
                                          @Param("limit") int limit);
 
     Question selectById(int id);
+
+    int updateCommentCount(@Param("id") int id, @Param("commentCount") int commentCount);
 }
