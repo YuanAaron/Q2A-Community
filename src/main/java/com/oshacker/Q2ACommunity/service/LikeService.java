@@ -1,5 +1,6 @@
 package com.oshacker.Q2ACommunity.service;
 
+import com.oshacker.Q2ACommunity.utils.JedisAdapter;
 import com.oshacker.Q2ACommunity.utils.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

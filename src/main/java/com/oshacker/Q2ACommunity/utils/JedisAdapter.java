@@ -1,4 +1,4 @@
-package com.oshacker.Q2ACommunity.service;
+package com.oshacker.Q2ACommunity.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,40 +81,40 @@ public class JedisAdapter implements InitializingBean {
         return false;
     }
 
-    public Long lpush(String key, String value) {
-        Jedis jedis = null;
-        try {
-            jedis = pool.getResource();
-            return jedis.lpush(key, value);
-        } catch (Exception e) {
-            logger.error("发生异常5" + e.getMessage());
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return 0L;
-    }
-
-    public List<String> brpop(int timeout, String key) {
-        Jedis jedis = null;
-        try {
-            jedis = pool.getResource();
-            return jedis.brpop(timeout, key);
-        } catch (Exception e) {
-            logger.error("发生异常6" + e.getMessage());
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return null;
-    }
-
-    public Jedis getJedis() {
-        return pool.getResource();
-    }
-
+//    public Long lpush(String key, String value) {
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            return jedis.lpush(key, value);
+//        } catch (Exception e) {
+//            logger.error("发生异常5" + e.getMessage());
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return 0L;
+//    }
+//
+//    public List<String> brpop(int timeout, String key) {
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            return jedis.brpop(timeout, key);
+//        } catch (Exception e) {
+//            logger.error("发生异常6" + e.getMessage());
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public Jedis getJedis() {
+//        return pool.getResource();
+//    }
+//
 //    public Transaction multi(Jedis jedis) {
 //        try {
 //            return jedis.multi();
@@ -145,64 +145,64 @@ public class JedisAdapter implements InitializingBean {
 //        }
 //        return null;
 //    }
-
-    public Set<String> zrevrange(String key, long start, long end) {
-        Jedis jedis = null;
-        try {
-            jedis = pool.getResource();
-            return jedis.zrevrange(key, start,end);
-        } catch (Exception e) {
-            logger.error("发生异常10" + e.getMessage());
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return null;
-    }
-
-    public Long zcard(String key) {
-        Jedis jedis = null;
-        try {
-            jedis = pool.getResource();
-            return jedis.zcard(key);
-        } catch (Exception e) {
-            logger.error("发生异常11" + e.getMessage());
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return 0L;
-    }
-
-    public Double zscore(String key,String member) {
-        Jedis jedis = null;
-        try {
-            jedis = pool.getResource();
-            return jedis.zscore(key,member);
-        } catch (Exception e) {
-            logger.error("发生异常12" + e.getMessage());
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return null;
-    }
-
-    public List<String> lrange(String key, int start, int end) {
-        Jedis jedis = null;
-        try {
-            jedis = pool.getResource();
-            return jedis.lrange(key, start, end);
-        } catch (Exception e) {
-            logger.error("发生异常" + e.getMessage());
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return null;
-    }
+//
+//    public Set<String> zrevrange(String key, long start, long end) {
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            return jedis.zrevrange(key, start,end);
+//        } catch (Exception e) {
+//            logger.error("发生异常10" + e.getMessage());
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public Long zcard(String key) {
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            return jedis.zcard(key);
+//        } catch (Exception e) {
+//            logger.error("发生异常11" + e.getMessage());
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return 0L;
+//    }
+//
+//    public Double zscore(String key,String member) {
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            return jedis.zscore(key,member);
+//        } catch (Exception e) {
+//            logger.error("发生异常12" + e.getMessage());
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public List<String> lrange(String key, int start, int end) {
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            return jedis.lrange(key, start, end);
+//        } catch (Exception e) {
+//            logger.error("发生异常" + e.getMessage());
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return null;
+//    }
 }
