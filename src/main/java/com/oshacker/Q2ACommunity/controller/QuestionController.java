@@ -5,6 +5,7 @@ import com.oshacker.Q2ACommunity.model.HostHolder;
 import com.oshacker.Q2ACommunity.model.Question;
 import com.oshacker.Q2ACommunity.model.ViewObject;
 import com.oshacker.Q2ACommunity.service.CommentService;
+import com.oshacker.Q2ACommunity.service.LikeService;
 import com.oshacker.Q2ACommunity.service.QuestionService;
 import com.oshacker.Q2ACommunity.service.UserService;
 import com.oshacker.Q2ACommunity.utils.ConstantUtil;
@@ -36,6 +37,9 @@ public class QuestionController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private LikeService likeService;
+
     @RequestMapping("/question/{qid}")
     public String questionDetail(Model model,@PathVariable("qid") int qid) {
         Question question = questionService.selectById(qid);
@@ -47,6 +51,17 @@ public class QuestionController {
             ViewObject vo=new ViewObject();
             vo.set("comment",comment);
             vo.set("user",userService.getUserById(comment.getUserId()));
+
+            //是否喜欢
+            if (hostHolder.getUser()==null) {
+                vo.set("liked",0);//相当于没有点击
+            } else {
+                vo.set("liked",likeService.getLikeStatus(hostHolder.getUser().getId(),ConstantUtil.ENTITY_COMMENT,comment.getId()));
+            }
+
+            //喜欢的数量
+            vo.set("likeCount",likeService.getlikeCount(ConstantUtil.ENTITY_COMMENT,comment.getId()));
+
             comments.add(vo);
         }
 
