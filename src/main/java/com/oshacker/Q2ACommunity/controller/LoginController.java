@@ -1,5 +1,8 @@
 package com.oshacker.Q2ACommunity.controller;
 
+import com.oshacker.Q2ACommunity.async.EventModel;
+import com.oshacker.Q2ACommunity.async.EventProducer;
+import com.oshacker.Q2ACommunity.async.EventType;
 import com.oshacker.Q2ACommunity.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,6 +28,9 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path={"/logout"},method={RequestMethod.GET})
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);
@@ -48,6 +54,11 @@ public class LoginController {
                     cookie.setMaxAge(5*24*3600);
                 }
                 response.addCookie(cookie);
+
+                //假如登录异常，就把登录异常事件发送到队列
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN).setExt("username",username)
+                        .setExt("email","1500438364@qq.com"));//收件人
+
                 if (!StringUtils.isBlank(next)) {
                     return "redirect:"+next;
                 }
