@@ -81,36 +81,36 @@ public class JedisAdapter implements InitializingBean {
         return false;
     }
 
-//    public Long lpush(String key, String value) {
-//        Jedis jedis = null;
-//        try {
-//            jedis = pool.getResource();
-//            return jedis.lpush(key, value);
-//        } catch (Exception e) {
-//            logger.error("发生异常5" + e.getMessage());
-//        } finally {
-//            if (jedis != null) {
-//                jedis.close();
-//            }
-//        }
-//        return 0L;
-//    }
-//
-//    public List<String> brpop(int timeout, String key) {
-//        Jedis jedis = null;
-//        try {
-//            jedis = pool.getResource();
-//            return jedis.brpop(timeout, key);
-//        } catch (Exception e) {
-//            logger.error("发生异常6" + e.getMessage());
-//        } finally {
-//            if (jedis != null) {
-//                jedis.close();
-//            }
-//        }
-//        return null;
-//    }
-//
+    public Long lpush(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.lpush(key, value);
+        } catch (Exception e) {
+            logger.error("发生异常5" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0L;
+    }
+
+    public List<String> brpop(int timeout, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.brpop(timeout, key);
+        } catch (Exception e) {
+            logger.error("发生异常6" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
 //    public Jedis getJedis() {
 //        return pool.getResource();
 //    }
