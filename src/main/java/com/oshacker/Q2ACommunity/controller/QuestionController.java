@@ -1,13 +1,7 @@
 package com.oshacker.Q2ACommunity.controller;
 
-import com.oshacker.Q2ACommunity.model.Comment;
-import com.oshacker.Q2ACommunity.model.HostHolder;
-import com.oshacker.Q2ACommunity.model.Question;
-import com.oshacker.Q2ACommunity.model.ViewObject;
-import com.oshacker.Q2ACommunity.service.CommentService;
-import com.oshacker.Q2ACommunity.service.LikeService;
-import com.oshacker.Q2ACommunity.service.QuestionService;
-import com.oshacker.Q2ACommunity.service.UserService;
+import com.oshacker.Q2ACommunity.model.*;
+import com.oshacker.Q2ACommunity.service.*;
 import com.oshacker.Q2ACommunity.utils.ConstantUtil;
 import com.oshacker.Q2ACommunity.utils.JSONUtil;
 import org.slf4j.Logger;
@@ -40,6 +34,9 @@ public class QuestionController {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private FollowService followService;
+
     @RequestMapping("/question/{qid}")
     public String questionDetail(Model model,@PathVariable("qid") int qid) {
         Question question = questionService.selectById(qid);
@@ -66,6 +63,28 @@ public class QuestionController {
         }
 
         model.addAttribute("comments",comments);
+
+        List<ViewObject> followUsers=new ArrayList<>();
+        List<Integer> users = followService.getFollowers(ConstantUtil.ENTITY_QUESTION, qid, 0, 10);
+        for (int uid :users) {
+            User user = userService.getUserById(uid);
+            if (user == null)
+                continue;
+
+            ViewObject vo = new ViewObject();
+            vo.set("id", user.getId());
+            vo.set("name", user.getName());
+            vo.set("headUrl", user.getHeadUrl());
+            followUsers.add(vo);
+        }
+        model.addAttribute("followUsers",followUsers);
+
+        if (hostHolder.getUser()!=null) {
+            model.addAttribute("followed",followService.isFollower(hostHolder.getUser().getId(),ConstantUtil.ENTITY_QUESTION,qid));
+        } else {
+            model.addAttribute("followed",false);
+        }
+
         return "detail";
     }
 

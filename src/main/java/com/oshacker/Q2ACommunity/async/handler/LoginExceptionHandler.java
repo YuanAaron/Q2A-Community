@@ -3,7 +3,7 @@ package com.oshacker.Q2ACommunity.async.handler;
 import com.oshacker.Q2ACommunity.async.EventHandler;
 import com.oshacker.Q2ACommunity.async.EventModel;
 import com.oshacker.Q2ACommunity.async.EventType;
-import com.oshacker.Q2ACommunity.service.MailSender;
+import com.oshacker.Q2ACommunity.utils.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

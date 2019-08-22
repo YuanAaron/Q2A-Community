@@ -4,6 +4,8 @@ import com.oshacker.Q2ACommunity.dao.QuestionDAO;
 import com.oshacker.Q2ACommunity.dao.UserDAO;
 import com.oshacker.Q2ACommunity.model.Question;
 import com.oshacker.Q2ACommunity.model.User;
+import com.oshacker.Q2ACommunity.service.FollowService;
+import com.oshacker.Q2ACommunity.utils.ConstantUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.oshacker.Q2ACommunity.service;
+package com.oshacker.Q2ACommunity.utils;
 
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class MailSender implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         mailSender = new JavaMailSenderImpl();
         mailSender.setUsername("1500438364");//qq号
-        mailSender.setPassword("");//授权码
+        mailSender.setPassword("jkfahwhadzdwhhca");//授权码
         mailSender.setHost("smtp.qq.com");//发送服务器
         mailSender.setPort(465);//发送服务器端口
         mailSender.setProtocol("smtps");//协议，类似https
