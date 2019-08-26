@@ -10,7 +10,7 @@ public class RedisKeyUtil {
     private static final String BIS_FOLLOWER="FOLLOWER";//粉丝
     private static final String BIS_FOLLOWEE="FOLLOWEE";//关注对象
 
-//    private static final String BIS_TIMELINE="TIMELINE";
+    private static final String BIS_TIMELINE="TIMELINE";
 
 
     public static String getLikeKey(int entityType,int entityId) {
@@ -33,8 +33,8 @@ public class RedisKeyUtil {
         return BIS_FOLLOWEE+SPLIT+ String.valueOf(userId)+SPLIT+ String.valueOf(entityType);
     }
 
-//    public static String getBisTimeline(int userId) {
-//        return BIS_TIMELINE+SPLIT+ String.valueOf(userId);
-//    }
+    public static String getBisTimeline(int userId) {
+        return BIS_TIMELINE+SPLIT+ String.valueOf(userId);
+    }
 
 }

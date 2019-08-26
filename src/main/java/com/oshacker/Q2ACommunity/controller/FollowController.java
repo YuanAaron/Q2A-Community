@@ -93,10 +93,10 @@ public class FollowController {
         boolean ret=followService.follow(hostHolder.getUser().getId(), ConstantUtil.ENTITY_QUESTION, questionId);
 
         //发送关注事件
-//        eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
-//                .setActorId(hostHolder.getUser().getId())
-//                .setEntityType(ConstantUtil.ENTITY_QUESTION)
-//                .setEntityId(questionId).setEntityOwnerId(question.getUserId()));
+        eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
+                .setActorId(hostHolder.getUser().getId())
+                .setEntityType(ConstantUtil.ENTITY_QUESTION)
+                .setEntityId(questionId).setEntityOwnerId(question.getUserId()));
 
         //被关注的问题下方有关注人的头像、姓名信息
         Map<String,Object> info=new HashMap<>();

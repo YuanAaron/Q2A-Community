@@ -1,5 +1,8 @@
 package com.oshacker.Q2ACommunity.controller;
 
+import com.oshacker.Q2ACommunity.async.EventModel;
+import com.oshacker.Q2ACommunity.async.EventProducer;
+import com.oshacker.Q2ACommunity.async.EventType;
 import com.oshacker.Q2ACommunity.model.Comment;
 import com.oshacker.Q2ACommunity.model.HostHolder;
 import com.oshacker.Q2ACommunity.service.CommentService;
@@ -28,6 +31,9 @@ public class CommentController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path={"/addComment"},method={RequestMethod.POST})
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
@@ -52,6 +58,9 @@ public class CommentController {
 
             int count=commentService.getCommentCount(comment.getEntityId(),comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(),count);
+
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(comment.getUserId())
+                    .setEntityId(questionId));
         } catch (Exception e) {
             logger.error("增加评论失败"+e.getMessage());
         }

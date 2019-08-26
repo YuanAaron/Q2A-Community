@@ -42,4 +42,6 @@
         <include refid="table"/>
         set comment_count=#{commentCount} where id=#{id}
     </update>
+
+
 </mapper>
