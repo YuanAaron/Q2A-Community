@@ -1,5 +1,8 @@
 package com.oshacker.Q2ACommunity.controller;
 
+import com.oshacker.Q2ACommunity.async.EventModel;
+import com.oshacker.Q2ACommunity.async.EventProducer;
+import com.oshacker.Q2ACommunity.async.EventType;
 import com.oshacker.Q2ACommunity.model.*;
 import com.oshacker.Q2ACommunity.service.*;
 import com.oshacker.Q2ACommunity.utils.ConstantUtil;
@@ -36,6 +39,10 @@ public class QuestionController {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private EventProducer eventProducer;
+
 
     @RequestMapping("/question/{qid}")
     public String questionDetail(Model model,@PathVariable("qid") int qid) {
@@ -106,7 +113,11 @@ public class QuestionController {
             }else {
                 question.setUserId(hostHolder.getUser().getId());
             }
+
             if (questionService.addQuestion(question)>0) {
+                eventProducer.fireEvent(new EventModel(EventType.ADDQUESTION)
+                        .setActorId(question.getUserId()).setEntityId(question.getId())
+                        .setExt("title", question.getTitle()).setExt("content", question.getContent()));
                 return JSONUtil.getJSONString(0);
             }
         } catch (Exception e) {
